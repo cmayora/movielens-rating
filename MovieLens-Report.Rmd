@@ -2,8 +2,14 @@
 title: "HarvardX: PH125.9x Data Science: Capstone. MovieLens Prediction Project"
 author: "Carlos Mayora"
 date: "April 29, 2020"
-output: pdf_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
 ---
+
+\newpage
 
 # Introduction
 
