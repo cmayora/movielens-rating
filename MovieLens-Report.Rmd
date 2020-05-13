@@ -358,7 +358,7 @@ train_set %>%
   ggtitle("Histogram: User Effect Distribution")
 ```
 
-We have confirmed the variability accross users, some users are very cranky and others love every movie. The next step is to incorporate the User effect, $b_u$, in to the model:
+We have confirmed the variability across users, some users are very cranky and others love every movie. The next step is to incorporate the User effect, $b_u$, in to the model:
 
 $$ Y_{u,i} = \mu + b_i + b_u + \epsilon_{u,i} $$
 where $Y_{u,i}$ is the prediction, $\epsilon_{u,i}$ is the independent error, and $\mu$ the mean rating for all movies, $b_i$ is the bias for each movie $i$, and $b_u$ is the bias for each user $u$. 
