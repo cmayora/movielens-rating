@@ -13,13 +13,13 @@ output:
 
 # Introduction
 
-Recommendation systems use ratings that users have given items to make specific recommendations. Companies that sell many products to many customers and permit these customers to rate their products, like Amazon, are able to collect massive datasets that can be used to predict what rating a particular user will give a specific item. Items for which a high rating is predicted for a given user are then recommended to that user.
+Recommendation systems use ratings that users have given items to make specific recommendations. Companies that sell many products to many customers and permit these customers to rate their products, like Amazon, are able to collect massive datasets that can be used to predict what rating a particular user will give to a specific item. Items for which a high rating is predicted for a given user are then recommended to that user.
 
 Recommendation systems are beneficial to both service providers and users. They reduce transaction costs of finding and selecting items in an online shopping environment. Recommendation systems have also proved to improve decision making process and quality. In e-commerce setting, recommender systems enhance revenues, for the fact that they are effective means of selling more products.
 
 Netflix uses a recommendation system to predict how many stars a user will give a specific movie. One star suggests it is not a good movie, whereas five stars suggests it is an excellent movie. In October 2006, Netflix offered a challenge to the data science community to improve their recommendation algorithm by 10% and win a million dollars. In September 2009, the winners were announced.
 
-The aim of this project is to create a movie recommendation system using the MovieLens dataset from GroupLens research lab, training a machine learning algotithm using the inputs in one subset to predict movie ratings in the validation set.
+The aim of this project is to create a movie recommendation system using the MovieLens dataset from GroupLens research lab, train a machine learning algorithm using the inputs in one subset to predict movie ratings in the validation set.
 
 ## MovieLens Dataset
 
@@ -39,7 +39,7 @@ The 10 million dataset can be found:
 ## Data Ingestion
 We will download and prepare the dataset to be used in the analysis using the code provided in the edx HarvardX: PH125.9x Data Science: Capstone course - Create Train and Validation Sets.
 
-First we download and split the 10M MovieLens dataset with 90% for the training set, called *edx* and 10% for the evaluation set, called *validation*. We will use *edx* subset for algorithm training as *validation* subset will be used only for evaluating the RMSE of the final algorithm.
+First we download and split the 10M MovieLens dataset with 90% for the training set, called *edx* and 10% for the evaluation set, called *validation*. We will use *edx* subset for algorithm training and *validation* subset will be used only for evaluating the RMSE of the final algorithm.
 
 ```{r prep, echo = TRUE, message = FALSE, warning = FALSE, eval = TRUE}
 
@@ -91,7 +91,7 @@ rm(dl, ratings, movies, test_index, temp, movielens, removed)
 ```
 
 ## Data Exploration
-Before start building the model, we need to get familiar and understand the data structure of the dataset in order to build a better model. First let's get the first 6 rows of the *edx* subset.
+Before we start building the model, we need to get familiar and understand the data structure of the dataset in order to build a better model. First let's get the first 6 rows of the *edx* subset.
 
 ```{r head, echo = TRUE, message = FALSE, warning = FALSE, eval = TRUE}
 #6 first rows of edx dataset including column names
@@ -107,7 +107,7 @@ We can see that *edx* dataset has 6 columns:
 * timestamp: the date when the rating was given, it is in timestamp format which is the total seconds since January 1st, 1970 at UTC to the date the rating was given. 
 * genres: pipe-separated list containing all the genres for the movie.
 
-We can see that the dataset is in the tidy format ready for exploration and analysis, where each row represents a rating given by one user to one movie and the column names are the features.
+We can see that the dataset is in tidy format, ready for exploration and analysis, where each row represents a rating given by one user to one movie and the column names are the features.
 
 From the summary we can see that the lowest rating is 0.5 and the highest is 5.0.
 
@@ -190,7 +190,7 @@ edx %>%
 
 ## Data Preparation
 
-We will train and test our algorithm using the *edx* dataset. For a final test of the algorithm, we will use the *validation* dataset to predict movie ratings, simaulating new data.
+We will train and test our algorithm using the *edx* dataset. For a final test of the algorithm, we will use the *validation* dataset to predict movie ratings, simulating new data.
 
 Let's split the *edx* dataset in two, the train and the test set, the model building is done in the train set, and the test set is used to test the model.
 
@@ -274,7 +274,7 @@ rmse_results <- bind_rows(rmse_results,
 rmse_results %>% knitr::kable()
 ```
 
-We get a RMSE of about 1, which is too high, but this give us our baseline RMSE to compare with next modelling approaches. We can do better than simply predicing the avarage rating, in next models we will include some of the insights we observed during the data exploration.
+We get a RMSE of about 1, which is too high, but this give us our baseline RMSE to compare with next modelling approaches. We can do better than simply predicting the average rating, in next models we will include some of the insights we observed during the data exploration.
 
 ## The Movie Effect Model
 
@@ -341,7 +341,7 @@ With the Movie Effect Model we have predicted the movie rating, taking into cons
 
 ## The Movie and User Effect Model
 
-We also know from experience that users are different in how they rate the movies, some users are very critical and may rate a good movie lower or some others are very generous always giving high rates, or simply, we all have different movie tastes. As we already see in our data exploration we also have users more active than others at rating movies.
+We also know from experience that users are different in how they rate the movies, some users are very critical and may rate a good movie lower or some others are very generous always giving high rates, or simply, we all have different movie tastes. As we already see in our data exploration, we also have users more active than others at rating movies.
 
 Let's compute the average rating for user $u$ for those users that have rated over 100 movies:
 
@@ -358,7 +358,7 @@ train_set %>%
   ggtitle("Histogram: User Effect Distribution")
 ```
 
-We have confirmed the variability accorss users, some users are very cranky and others love every movie. The next step is to incorporate the User effect, $b_u$, in to the model:
+We have confirmed the variability accross users, some users are very cranky and others love every movie. The next step is to incorporate the User effect, $b_u$, in to the model:
 
 $$ Y_{u,i} = \mu + b_i + b_u + \epsilon_{u,i} $$
 where $Y_{u,i}$ is the prediction, $\epsilon_{u,i}$ is the independent error, and $\mu$ the mean rating for all movies, $b_i$ is the bias for each movie $i$, and $b_u$ is the bias for each user $u$. 
@@ -519,7 +519,7 @@ train_matrix <- train_set %>%
   as.matrix()
 ```
 
-Since the above piece of code is too heavy to run, we can use the recosystem package which is specifically use for recommender system using matrix factorization.
+Since the above piece of code is too heavy to run, we can use the recosystem package which is specifically used for recommender systems using matrix factorization.
 
 The usage of $recosystem$ is quite simple, mainly consisting of the following steps:
 
@@ -577,7 +577,7 @@ We can see that Matrix Factorization has improved significantly the RMSE.
 
 # Results Analysis
 
-From the results table above we can see that Regularized Movie and User Effect, and Matrix Factorizacion - Recosystem models got the lower RMSE, below the target. So now we are going to apply both models using *edx* set to train the model and the *validation* set to test it and calculate the RMSE, finally we will check if we still achieve the target which is RMSE lower than 0.86490.
+From the results table above, we can see that Regularized Movie and User Effect, and Matrix Factorizacion - Recosystem models got the lower RMSE, below the target. So now we are going to apply both models using *edx* set to train the model and the *validation* set to test it and calculate the RMSE, finally we will check if we still achieve the target which is RMSE lower than 0.86490.
 
 ## Regularization with Validation Set
 
@@ -666,7 +666,7 @@ From the RMSE table we can see how we have improved our model using different al
 
 To start, we calculated the RMSE using just the average of all the ratings, this resulted in a RMSE higher than 1 (`r avg_rmse`), which is not good since we might be missing the rating by one star. Then we incorporated the Movie Effect (`r movie_rmse`) and Movie and User Effect (`r user_rmse`) which gives a great improvement of `r round(((avg_rmse - user_rmse)/((avg_rmse + user_rmse)/2)) * 100, digits=2)`% from initial model.
 
-We could do it better, analysing the data revealed that some features have large effect on errors, so a regularization model was needed to penalize this data. We added a penalty value for movies and users with few number of ratings, this model returned a RMSE of `r reg_validation_rmse` which is lower than our project target.
+We could do it better, the data analysis revealed that some features have large effect on errors, so a regularization model was needed to penalize this data. We added a penalty value for movies and users with few number of ratings, this model returned a RMSE of `r reg_validation_rmse` which is lower than our project target.
 
 Finally, we evaluated Matrix Factorizacion algorithm using the Recosystem package and significantly improved our RMSE getting `r fact_validation_rmse` which represents an improvement of `r round(((avg_rmse - fact_validation_rmse)/((avg_rmse + fact_validation_rmse)/2)) * 100, digits=2)`% compared to our initial model.
 
